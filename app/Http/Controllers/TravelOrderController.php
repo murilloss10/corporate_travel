@@ -2,63 +2,56 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\CreatesTravelOrderRequest;
+use App\Http\Requests\UpdatesTravelOrderStatusRequest;
+use App\Services\TravelOrderService;
+use Exception;
+use Illuminate\Http\JsonResponse;
 
 class TravelOrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct(
+        private TravelOrderService $travelOrderService
+    ) {}
+
+    public function index(): ?JsonResponse
     {
-        return response()->json(['message' => 'Hello World!']);
+        return $this->travelOrderService->allTravelOrders();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(CreatesTravelOrderRequest $request): ?JsonResponse
     {
-        //
+        try {
+            return $this->travelOrderService->createsTravelOrder($request);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function show(int $travel_order): ?JsonResponse
     {
-        //
+        try {
+            return $this->travelOrderService->getsTravelOrder($travel_order);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function update(UpdatesTravelOrderStatusRequest $request, int $travel_order)
     {
-        //
+        try {
+            return $this->travelOrderService->updatesTravelOrderStatus($request, $travel_order);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function destroy(int $travel_order): ?JsonResponse
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        try {
+            return $this->travelOrderService->cancelTravelOrder($travel_order);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
     }
 }

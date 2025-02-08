@@ -32,17 +32,19 @@ class CreatesUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            '*.required'            => 'O campo :attribute é obrigatório.',
-            'name.min'              => 'O campo nome deve ter no mínimo 2 caracteres.',
-            'name.max'              => 'O campo nome deve ter no máximo 100 caracteres.',
-            'email.min'             => 'O campo :attribute deve ter no mínimo 5 caracteres.',
-            'email.max'             => 'O campo :attribute deve ter no máximo 255 caracteres.',
-            'email.email'           => 'O campo :attribute deve ser um e-mail válido.',
-            'email.unique'          => 'O campo :attribute já está sendo utilizado.',
+            'name.required'         => 'O nome é obrigatório.',
+            'email.required'        => 'O e-mail é obrigatório.',
+            'password.required'     => 'A senha é obrigatória.',
+            'name.min'              => 'O nome deve ter no mínimo :min caracteres.',
+            'email.min'             => 'O e-mail deve ter no mínimo :min caracteres.',
+            'password.min'          => 'A senha deve ter no mínimo :min caracteres.',
+            'name.max'              => 'O nome deve ter no máximo :max caracteres.',
+            'email.max'             => 'O e-mail deve ter no máximo :max caracteres.',
+            'password.max'          => 'A senha deve ter no máximo :max caracteres',
+            'email.email'           => 'Informe um e-mail válido.',
+            'email.unique'          => 'Este e-mail já está sendo utilizado.',
             'password.confirmed'    => 'As senhas não coincidem.',
-            'password.min'          => 'O campo :attribute deve ter no mínimo 8 caracteres',
-            'password.max'          => 'O campo :attribute deve ter no máximo 255 caracteres',
-            'role.in'               => 'O campo :attribute deve ser "user" ou "admin".',
+            'role.in'               => 'A função deve ser "user" ou "admin".',
         ];
     }
 }

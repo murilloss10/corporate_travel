@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('return_date');
             $table->enum('status', ['Solicitado', 'Aprovado', 'Cancelado'])->default('Solicitado');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
