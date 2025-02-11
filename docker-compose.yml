@@ -1,0 +1,47 @@
+services:
+  nginx:
+    image: nginx:latest
+    container_name: corporate_travel_nginx
+    ports:
+      - "8081:80"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - corporate_travel_network
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/php-fpm/Dockerfile
+    image: corporate_travel_app:latest
+    container_name: corporate_travel_app
+    volumes:
+      - ./:/var/www/html
+    working_dir: /var/www/html
+    ports:
+      - "8080:8080"
+    networks:
+      - corporate_travel_network
+
+  mysql:
+    image: mysql:8.0
+    container_name: corporate_travel_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: corporate_travel_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - corporate_travel_network
+
+volumes:
+  mysql_data:
+
+networks:
+  corporate_travel_network:
+    driver: bridge

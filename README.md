@@ -1,66 +1,83 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Serviço de Criação de Ordens de Viagem
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este projeto é um serviço de criação de ordens de viagem. Ele permite que os usuários criem ordens de viagem, adicionando detalhes como ```destino```, ```data de partida``` e ```data de retorno```.
 
-## About Laravel
+O serviço é dividido em ações de usuário comuns e usuário administradores, sendo a diferenciação feita por ```scopes``` do token.
+Os tipos de tokens e suas ações são:
+- 'user-permission': Pode criar ordens de viagem, visualizar suas ordens de viagem criadas, cancelar suas ordens de viagem e receber e-mails de confirmação de cancelamento e/ou atualização de status de ordem de viagem.
+- 'admin-permission': Pode visualizar todas as ordens de viagem criadas por outros usuários e aprovar ou desaprovar pedidos.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Informações do Projeto
+- **Nome do Projeto:** Corporate Travel
+- **Descrição:** Serviço de criação de ordens de viagem.
+- **Tecnologias Utilizadas:** PHP, Laravel, MySQL, Docker, Docker Compose.
+- **Versão do Laravel:** 11.x
+- **Versão do PHP:** 8.3
+### Regras de Negócio
+- Somente os usuários autenticados e com token ```user-permission``` podem criar ordens de viagem;
+- Para ver os detalhes de uma ordem de viagem específica, o usuário deve ser o proprietário da ordem de viagem ou ter permissão de administrador (token ```admin-permission```);
+- Somente os usuários com token ```admin-permission``` e que não sejam proprietários da ordem, podem aprovar ou desaprovar ordens de viagem.
+    - Somente pedidos com o status "Solicitado" podem ser aprovados ou desaprovados;
+    - Após a avaliação, o status da ordem de viagem será atualizado para "Aprovado" ou "Cancelado";
+    - Um 'Job' é acionado através do 'Obverser' para enviar e-mails de confirmação de aprovação ou reprovação de uma ordem de viagem.
+- Um usuário com token ```user-permission``` pode cancelar uma ordem de viagem apenas após a aprovação da mesma;
+- A listagem de ordens de viagem é paginada e exibem diferentes resultados, dado o escopo do token.
+    - Filtros podem ser aplicados para a listagem de ordens de viagem, sendo os campos:
+        - 'status', 'city', 'state', 'startDate', 'endDate' e 'perPage';
+        - Todos opcionais e sendo passados como query params; e
+        - Onde 'perPage' é o número de resultados por página;
+        - 'status' sendo 'Aprovado', 'Solicitado' ou 'Cancelado';
+        - 'city', o nome da cidade;
+        - 'state', o nome do estado;
+        - 'startDate', no formato 'YYYY-MM-DD', a data de início da viagem;
+        - 'endDate', no formato 'YYYY-MM-DD', a data de retorno da viagem;
+        - Ex.: `http://localhost:8000/api/v1/orders?status=Aprovado&city=São Paulo&state=SP&startDate=2023-01-01&endDate=2023-01-31&perPage=10`
+    - Usuário com token ```user-permission``` receberá somente as suas solicitações;
+    - Usuário com token ```admin-permission``` receberá as solicitações de todos os usuários;
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Pré-requisitos
+Ter instalado o Docker e o Docker Compose no seu sistema.
 
-## Learning Laravel
+## Configuração
+1. Clone o repositório:
+```
+git clone https://github.com/murilloss10/corporate_travel.git
+```
+2. Navegue até o diretório do projeto e execute o seguinte comando para criar e iniciar os containers:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```
+docker-compose up -d
+```
+3. É necessário instalar as dependências do projeto, com o comando:
+```
+docker exec -it corporate_travel_app composer install
+```
+4. Crie um arquivo .env a partir do arquivo .env.example:
+```
+docker exec -it corporate_travel_app cp .env.example .env
+```
+5. Gere uma nova chave para o Laravel:
+```
+docker exec -it corporate_travel_app php artisan key:generate
+```
+6. Execute as migrações do banco de dados:
+```
+docker exec -it corporate_travel_app php artisan migrate
+```
+7. Gere as chaves do Passport:
+```
+docker exec corporate_travel_app php artisan passport:keys
+```
+8. Crie um novo acesso pessoal de cliente do Passport:
+```
+docker exec corporate_travel_app php artisan passport:client --personal
+```
+9. Copie as chaves geradas e retornadas no terminal e cole no arquivo .env para as seguintes variáveis de ambiente:
+```
+PASSPORT_PERSONAL_ACCESS_CLIENT_ID="client-id-value"
+PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET="client-secret-value"
+```
+### Disparo de e-mails
+Por padrão, o serviço de disparo de e-mails está configurado no arquivo .env como 'log', mas caso seja da preferência, é possível utilizar o serviço de e-mail do Gmail, que está pré-configurado, faltando apenas as variáveis de ambiente: ```MAIL_MAILER=smtp```, ```MAIL_USERNAME```, ```MAIL_PASSWORD``` e ```MAIL_FROM_ADDRESS```. Onde ```MAIL_USERNAME``` e ```MAIL_FROM_ADDRESS``` são destinados ao e-mail do Gmail e ```MAIL_PASSWORD``` é a senha do e-mail.
+Obs.: É necessário habilitar o acesso de aplicativos menos seguros nas configurações da sua conta, entretanto, esta habilitação é permitidas apenas para contas antigas.
