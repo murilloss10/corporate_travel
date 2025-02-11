@@ -1,0 +1,1052 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Corporate Travel API",
+        "description": "Documentação da API.",
+        "contact": {
+            "name": "Murillo Santos",
+            "email": "murilloss10@gmail.com"
+        },
+        "version": "0.0.0"
+    },
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "NoPermission"
+                ],
+                "summary": "Realiza o login do usuário.",
+                "description": "Realiza o login do usuário.",
+                "operationId": "5928fb15397c44cb50576a2dcd29cf7b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "johndoe@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login realizado com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "johndoe@example.com"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2025-02-11 10:00:00"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "bearertoken...."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuário não encontrado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuário não encontrado."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/travel-orders": {
+            "get": {
+                "tags": [
+                    "UserPermission",
+                    "AdminPermission"
+                ],
+                "summary": "Retorna todas as ordens de viagens.",
+                "description": "Retorna todas as ordens de viagens.",
+                "operationId": "7236fc323bce8891193d5289450fe071",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filtro de busca por status",
+                        "required": false,
+                        "schema": {
+                            "description": "Status disponíveis: 'Aprovado', 'Solicitado' e 'Cancelado'",
+                            "type": "string",
+                            "enum": [
+                                "Aprovado",
+                                "Pendente",
+                                "Rejeitado"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "city",
+                        "in": "query",
+                        "description": "Filtro de busca por cidade",
+                        "required": false,
+                        "schema": {
+                            "description": "Digite a cidade a ser buscada",
+                            "type": "string",
+                            "example": "Belo Horizonte"
+                        }
+                    },
+                    {
+                        "name": "state",
+                        "in": "query",
+                        "description": "Filtro de busca por estado",
+                        "required": false,
+                        "schema": {
+                            "description": "Digite o estado a ser buscado",
+                            "type": "string",
+                            "example": "Minas Gerais"
+                        }
+                    },
+                    {
+                        "name": "startDate",
+                        "in": "query",
+                        "description": "Filtro de busca por data de partida",
+                        "required": false,
+                        "schema": {
+                            "description": "Selecione a data de partida",
+                            "type": "date",
+                            "example": "2024-01-01"
+                        }
+                    },
+                    {
+                        "name": "endDate",
+                        "in": "query",
+                        "description": "Filtro de busca por data de retorno",
+                        "required": false,
+                        "schema": {
+                            "description": "Selecione a data de retorno",
+                            "type": "date",
+                            "example": "2025-12-31"
+                        }
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Filtro de resultados por página",
+                        "required": false,
+                        "schema": {
+                            "description": "Digite a quantidade de itens por página",
+                            "type": "integer",
+                            "example": 5
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de ordens de viagens.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "current_page": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "user_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "city": {
+                                                        "type": "string",
+                                                        "example": "Belo Horizonte"
+                                                    },
+                                                    "state": {
+                                                        "type": "string",
+                                                        "example": "Minas Gerais"
+                                                    },
+                                                    "country": {
+                                                        "type": "string",
+                                                        "example": "Brasil"
+                                                    },
+                                                    "departure_date": {
+                                                        "type": "string",
+                                                        "example": "2025-05-11 00:00:00"
+                                                    },
+                                                    "return_date": {
+                                                        "type": "string",
+                                                        "example": "2025-06-11 00:00:00"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "Aprovado"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2025-02-11 00:00:00"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2025-02-11 00:00:00"
+                                                    },
+                                                    "user": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "John Doe"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "first_page_url": {
+                                            "type": "string",
+                                            "example": "http://localhost:8081/api/travel-orders?page=1"
+                                        },
+                                        "from": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "last_page": {
+                                            "type": "integer",
+                                            "example": "1"
+                                        },
+                                        "last_page_url": {
+                                            "type": "string",
+                                            "example": "http://localhost:8081/api/travel-orders?page=2"
+                                        },
+                                        "links": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "url": {
+                                                        "type": "string",
+                                                        "example": "http://localhost/api/travel-orders?page=1"
+                                                    },
+                                                    "label": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "active": {
+                                                        "type": "boolean",
+                                                        "example": true
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "next_page_url": {
+                                            "type": "string",
+                                            "example": null
+                                        },
+                                        "path": {
+                                            "type": "string",
+                                            "example": "http://localhost:8081/api/travel-orders"
+                                        },
+                                        "per_page": {
+                                            "type": "integer",
+                                            "example": 20
+                                        },
+                                        "prev_page_url": {
+                                            "type": "string",
+                                            "example": null
+                                        },
+                                        "to": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "total": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "UserPermission"
+                ],
+                "summary": "Cria uma nova ordem de viagem.",
+                "description": "Cria uma nova ordem de viagem.",
+                "operationId": "932a17e33cbd078f31d994fef6f94bad",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "city": {
+                                        "type": "string",
+                                        "example": "Belo Horizonte"
+                                    },
+                                    "state": {
+                                        "type": "string",
+                                        "example": "Minas Gerais"
+                                    },
+                                    "country": {
+                                        "type": "string",
+                                        "example": "Brasil"
+                                    },
+                                    "departure_date": {
+                                        "type": "string",
+                                        "example": "2025-02-11"
+                                    },
+                                    "return_date": {
+                                        "type": "string",
+                                        "example": "2025-02-11"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Criado com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "city": {
+                                            "type": "string",
+                                            "example": "Belo Horizonte"
+                                        },
+                                        "state": {
+                                            "type": "string",
+                                            "example": "Minas Gerais"
+                                        },
+                                        "country": {
+                                            "type": "string",
+                                            "example": "Brasil"
+                                        },
+                                        "departure_date": {
+                                            "type": "string",
+                                            "example": "2025-02-11 00:00:00"
+                                        },
+                                        "return_date": {
+                                            "type": "string",
+                                            "example": "2025-02-11 00:00:00"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2025-02-11 00:00:00"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2025-02-11 00:00:00"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Ação não autorizada.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ação não autorizada."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ação não autorizada.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "A cidade é obrigatória."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "city": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "A cidade é obrigatória."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/travel-orders/{travel_order}": {
+            "get": {
+                "tags": [
+                    "UserPermission",
+                    "AdminPermission"
+                ],
+                "summary": "Retorna uma ordem de viagem específica.",
+                "description": "Retorna uma ordem de viagem específica.",
+                "operationId": "06fa1341af85d12b078c86636e4f1389",
+                "parameters": [
+                    {
+                        "name": "travel_order",
+                        "in": "path",
+                        "description": "ID da ordem de viagem",
+                        "required": true,
+                        "schema": {
+                            "description": "ID da ordem de viagem",
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados retornados com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "city": {
+                                            "type": "string",
+                                            "example": "Belo Horizonte"
+                                        },
+                                        "state": {
+                                            "type": "string",
+                                            "example": "Minas Gerais"
+                                        },
+                                        "country": {
+                                            "type": "string",
+                                            "example": "Brasil"
+                                        },
+                                        "departure_date": {
+                                            "type": "string",
+                                            "example": "2025-02-11 10:00:00"
+                                        },
+                                        "return_date": {
+                                            "type": "string",
+                                            "example": "2025-02-11 10:00:00"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Aprovado"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2025-02-11 10:00:00"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2025-02-11 10:00:00"
+                                        },
+                                        "deleted_at": {
+                                            "type": "string",
+                                            "example": null
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "johndoe@example.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Ação não autorizada.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Você não tem permissão para visualizar esta ordem de viagem."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ordem de viagem não encontrada.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ordem de viagem não encontrada."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "UserPermission"
+                ],
+                "summary": "Cancela uma ordem de viagem.",
+                "description": "Cancela uma ordem de viagem.",
+                "operationId": "fb73ec251f8b79812fc77b4ba994fc32",
+                "parameters": [
+                    {
+                        "name": "travel_order",
+                        "in": "path",
+                        "description": "ID da ordem de viagem",
+                        "required": true,
+                        "schema": {
+                            "description": "ID da ordem de viagem",
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Cancelado com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Requisição inválida.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Requisição inválida."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Ação não autorizada.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Você não tem permissão para cancelar esta ordem de viagem."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ordem de viagem não encontrada.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ordem de viagem não encontrada."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "AdminPermission"
+                ],
+                "summary": "Avalia uma ordem de viagem.",
+                "description": "Avalia uma ordem de viagem.",
+                "operationId": "9e91442a6577156ff64e1d1e6cd9f15e",
+                "parameters": [
+                    {
+                        "name": "travel_order",
+                        "in": "path",
+                        "description": "ID da ordem de viagem",
+                        "required": true,
+                        "schema": {
+                            "description": "ID da ordem de viagem",
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "status": {
+                                        "type": "string",
+                                        "example": "Aprovado|Cancelado"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Avaliado com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Aprovado"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2025-02-11 00:00:00"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Requisição inválida.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Requisição inválida."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Ação não autorizada.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ação não autorizada."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ordem de viagem não encontrada.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ordem de viagem não encontrada."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Status inválido.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "O status deve ser 'Aprovado' ou 'Cancelado'."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "O status deve ser 'Aprovado' ou 'Cancelado'."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users": {
+            "post": {
+                "tags": [
+                    "NoPermission"
+                ],
+                "summary": "Cria um usuário.",
+                "description": "Cria um usuário.",
+                "operationId": "592819a0265360b2014512d6dbfaf0e7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "johndoe@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "user|admin"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuário criado com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "John Doe"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "johndoe@example.com"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2025-02-11 10:00:00"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2025-02-11 10:00:00"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "bearertoken...."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "O nome é obrigatório."
+                                                    }
+                                                },
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "O e-mail é obrigatório."
+                                                    }
+                                                },
+                                                "password": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "A senha é obrigatória."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "NoPermission",
+            "description": "NoPermission"
+        },
+        {
+            "name": "UserPermission",
+            "description": "UserPermission"
+        },
+        {
+            "name": "AdminPermission",
+            "description": "AdminPermission"
+        }
+    ]
+}
