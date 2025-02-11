@@ -2,9 +2,11 @@
 
 namespace App\Observers;
 
+use App\Jobs\DeletingTravelOrderJob;
+use App\Jobs\UpdatingTravelOrderJob;
 use App\Models\TravelOrder;
 
-class CancelTravelOrderObserver
+class TravelOrderObserver
 {
     /**
      * Handle the TravelOrder "created" event.
@@ -19,7 +21,7 @@ class CancelTravelOrderObserver
      */
     public function updated(TravelOrder $travelOrder): void
     {
-        //
+        UpdatingTravelOrderJob::dispatch($travelOrder->id);
     }
 
     /**
@@ -27,7 +29,7 @@ class CancelTravelOrderObserver
      */
     public function deleted(TravelOrder $travelOrder): void
     {
-        //implementar aqui pra disparo de  email
+        !app()->environment('testing') && DeletingTravelOrderJob::dispatch($travelOrder->id);
     }
 
     /**

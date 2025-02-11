@@ -11,8 +11,7 @@ class CreatesTravelOrderRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // dd($this->user());//validar permissao do usuario
-        return true;
+        return $this->user()->tokenCan('user-permission');
     }
 
     /**
