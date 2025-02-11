@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 
 class TravelOrder extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Notifiable, HasFactory;
     
     /**
      * Campos que podem ser atribuídos em massa.

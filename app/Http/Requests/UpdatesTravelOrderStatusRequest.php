@@ -11,7 +11,7 @@ class UpdatesTravelOrderStatusRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;//verificar tambem
+        return $this->user()->tokenCan('admin-permission');
     }
 
     /**
