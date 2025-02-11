@@ -31,7 +31,7 @@ Os tipos de tokens e suas ações são:
         - 'state', o nome do estado;
         - 'startDate', no formato 'YYYY-MM-DD', a data de início da viagem;
         - 'endDate', no formato 'YYYY-MM-DD', a data de retorno da viagem;
-        - Ex.: `http://localhost:8000/api/v1/orders?status=Aprovado&city=São Paulo&state=SP&startDate=2023-01-01&endDate=2023-01-31&perPage=10`
+        - Ex.: `http://localhost:8081/api/v1/orders?status=Aprovado&city=São Paulo&state=SP&startDate=2023-01-01&endDate=2023-01-31&perPage=10`
     - Usuário com token ```user-permission``` receberá somente as suas solicitações;
     - Usuário com token ```admin-permission``` receberá as solicitações de todos os usuários;
 
@@ -81,3 +81,9 @@ PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET="client-secret-value"
 ### Disparo de e-mails
 Por padrão, o serviço de disparo de e-mails está configurado no arquivo .env como 'log', mas caso seja da preferência, é possível utilizar o serviço de e-mail do Gmail, que está pré-configurado, faltando apenas as variáveis de ambiente: ```MAIL_MAILER=smtp```, ```MAIL_USERNAME```, ```MAIL_PASSWORD``` e ```MAIL_FROM_ADDRESS```. Onde ```MAIL_USERNAME``` e ```MAIL_FROM_ADDRESS``` são destinados ao e-mail do Gmail e ```MAIL_PASSWORD``` é a senha do e-mail.
 Obs.: É necessário habilitar o acesso de aplicativos menos seguros nas configurações da sua conta, entretanto, esta habilitação é permitidas apenas para contas antigas.
+
+## Documentação da API
+Para acessar a documentação da API, acesse a rota ```/documentation```, como a seguir:
+```
+http://localhost:8081/documentation
+```
