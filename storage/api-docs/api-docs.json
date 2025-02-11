@@ -10,88 +10,6 @@
         "version": "0.0.0"
     },
     "paths": {
-        "/api/login": {
-            "post": {
-                "tags": [
-                    "NoPermission"
-                ],
-                "summary": "Realiza o login do usuário.",
-                "description": "Realiza o login do usuário.",
-                "operationId": "5928fb15397c44cb50576a2dcd29cf7b",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "email",
-                                    "password"
-                                ],
-                                "properties": {
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "johndoe@example.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "password123"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Login realizado com sucesso.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "email": {
-                                            "type": "string",
-                                            "example": "johndoe@example.com"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "example": "2025-02-11 10:00:00"
-                                        },
-                                        "token": {
-                                            "type": "string",
-                                            "example": "bearertoken...."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Usuário não encontrado.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Usuário não encontrado."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/travel-orders": {
             "get": {
                 "tags": [
@@ -1037,16 +955,16 @@
     },
     "tags": [
         {
-            "name": "NoPermission",
-            "description": "NoPermission"
-        },
-        {
             "name": "UserPermission",
             "description": "UserPermission"
         },
         {
             "name": "AdminPermission",
             "description": "AdminPermission"
+        },
+        {
+            "name": "NoPermission",
+            "description": "NoPermission"
         }
     ]
 }
